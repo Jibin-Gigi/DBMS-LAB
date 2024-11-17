@@ -20,6 +20,27 @@ CREATE TABLE takes (
     PRIMARY KEY (sid, cid)
 );
 
+
+alter table students modify gpa decimal(10,2);
+
+insert into students values(4, 'Manu', 20, 8.58825, 'CS');
+
+update students set gpa = 9.5 where sid=1;
+update students set age = 21 where sid = 1;
+
+alter table course drop primary key;
+desc course;
+
+alter table course modify cid primary key;
+alter table course disable constraint SYS_C00173687699;
+alter table course enable constraints SYS_C00173687699;
+
+insert into course values(1, 'DBMS');
+insert into course(cid, cname) values(2, 'DBMS');
+INSERT INTO course VALUES (3, 'MP');
+INSERT INTO course (cid, cname) VALUES (4, 'DBMS');
+
+
 -- Question I: b) Give default value for age as 0. (Already implemented in the "students" table above.)
 
 -- Question I: c) Create a view Toppers as names and gpa of students having gpa greater than 8.
@@ -46,7 +67,7 @@ CREATE TABLE employee (
     designation VARCHAR(20)
 );
 
-INSERT INTO employee VALUES (1, 'Jibin', 'Manager');
+INSERT INTO employee VALUES (1, 'Nagu', 'Manager');
 INSERT INTO employee VALUES (2, 'Manu', 'CTO');
 
 DECLARE
@@ -83,6 +104,10 @@ BEGIN
 END;
 /
 
+--correcting constraints
+ALTER TABLE takes DROP constraints SYS_C00173692944;
+alter table takes add constraints takes_sid_fk foreign key(sid) references students(sid) on delete cascade;
+desc takes;
 -- Testing the trigger:
 DELETE FROM students WHERE sid = 1;
 
